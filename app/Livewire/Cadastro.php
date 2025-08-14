@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\CadastroForm;
+use App\Models\User;
 use Livewire\Component;
 
 class Cadastro extends Component
@@ -13,12 +14,11 @@ class Cadastro extends Component
     {
         $this->validate();
 
-        dd('Cadastro realizado com sucesso!', [
-            'name' => $this->form->name,
-            'email' => $this->form->email,
-            'password' => $this->form->password,
-            'password_confirmation' => $this->form->password_confirmation,
-        ]);
+        User::create($this->form->all());
+
+        $this->form->reset();
+
+        return redirect()->route('login');
     }
 
     public function render()
