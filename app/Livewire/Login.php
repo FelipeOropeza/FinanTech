@@ -7,11 +7,11 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('components.layouts.app')]
-class Home extends Component
+class Login extends Component
 {
-    #[Title('Home')]
+    #[Title('Login')]
     public function render()
     {
-        return view('livewire.home');
+        return view('livewire.login');
     }
 }
