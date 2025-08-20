@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Livewire\Forms\LoginForm;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -18,11 +17,8 @@ class Login extends Component
     {
         $this->form->validate();
 
-        $user = User::where('email', $this->form->email)->first();
-
-        if ($user && Hash::check($this->form->password, $user->password)) {
+        if (Auth::attempt(['email' => $this->form->email, 'password' => $this->form->password])) {
             session()->regenerate();
-            Auth::login($user);
             return redirect()->route('home');
         }
 
