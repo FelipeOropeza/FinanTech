@@ -11,9 +11,9 @@
 </head>
 
 <body>
-    <x-layouts.nav-bar />
+    <livewire:layouts.nav-bar />
     {{ $slot }}
-    <x-layouts.footer />
+    <livewire:layouts.footer />
     @livewireScripts
 </body>
 

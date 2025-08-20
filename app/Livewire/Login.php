@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Forms\LoginForm;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -18,7 +19,7 @@ class Login extends Component
         $this->form->validate();
 
         if (Auth::attempt(['email' => $this->form->email, 'password' => $this->form->password])) {
-            session()->regenerate();
+            Session::regenerate();
             return redirect()->route('home');
         }
 

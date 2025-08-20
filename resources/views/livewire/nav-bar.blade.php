@@ -16,7 +16,7 @@
 
                 <div x-show="open" @click.away="open = false" x-transition
                     class="absolute right-0 mt-2 w-40 bg-white rounded shadow-lg z-50">
-                    <form wire:submit.prevent="logout">
+                    <form wire:submit="logout">
                         <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
                             Sair
                         </button>
