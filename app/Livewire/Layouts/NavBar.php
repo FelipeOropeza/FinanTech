@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Log;
 
 class NavBar extends Component
 {
+    public $userSubscription;
+
+    public function mount()
+    {
+        $this->userSubscription = Auth::user()->subscription->plan_id ?? null;
+    }
+
     public function logout()
     {
         try {

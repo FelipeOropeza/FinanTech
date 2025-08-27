@@ -9,10 +9,12 @@ use Livewire\Component;
 class Plano extends Component
 {
     public $plans;
+    public $userSubscription;
 
     public function mount()
     {
         $this->plans = Plan::all();
+        $this->userSubscription = Auth::user()->subscription; // Assumindo relação 1:1
     }
 
     public function render()
@@ -22,14 +24,15 @@ class Plano extends Component
 
     public function subscribe($planId)
     {
-        // Lógica para assinar o plano
-        // Aqui você integraria com um gateway de pagamento como o Stripe
-        // Por enquanto, vamos apenas criar a assinatura no banco
+        if ($this->userSubscription) {
+            session()->flash('message', 'Você já possui uma assinatura ativa!');
+            return;
+        }
 
         Auth::user()->subscription()->create([
-            'plan_id' => $planId,
+            'plan_id'   => $planId,
             'starts_at' => now(),
-            'ends_at' => now()->addMonth(), // Assinatura de 1 mês
+            'ends_at'   => now()->addMonth(),
         ]);
 
         session()->flash('message', 'Inscrição realizada com sucesso!');

@@ -6,7 +6,16 @@
 
         <div class="relative" x-data="{ open: false }">
             @auth
-                <button @click="open = !open" class="text-white font-bold flex items-center gap-2 focus:outline-none">
+                @php
+                    $planColor = match ($userSubscription) {
+                        1 => 'text-gray-300', 
+                        2 => 'text-green-400',
+                        3 => 'text-yellow-400',
+                        default => 'text-white',
+                    };
+                @endphp
+
+                <button @click="open = !open" class="{{ $planColor }} font-bold flex items-center gap-2 focus:outline-none">
                     {{ Auth::user()->name }}
                     <svg class="w-4 h-4 transform transition-transform" :class="open ? 'rotate-180' : ''" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -16,12 +25,16 @@
 
                 <div x-show="open" @click.away="open = false" x-transition
                     class="absolute right-0 mt-2 w-40 bg-white rounded shadow-lg z-50">
+
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
+                        Gerenciar Banco
+                    </a>
+
                     <form wire:submit="logout">
                         <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">
                             Sair
                         </button>
                     </form>
-
                 </div>
             @else
                 <a href="{{ route('login') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
