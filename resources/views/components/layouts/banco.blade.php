@@ -12,7 +12,7 @@
 
 <body class="relative min-h-screen">
 
-    <a href="{{ route('home') }}"
+    <a href="{{ route('financeiro') }}"
         class="absolute top-4 left-4 flex items-center text-blue-600 hover:text-blue-800 transition">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
