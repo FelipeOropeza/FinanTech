@@ -14,7 +14,7 @@
            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
             ➕ Nova Categoria
         </a>
-        <a href="#"
+        <a href="{{ route('transacoes') }}"
            class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
             ➕ Novo Lançamento
         </a>
@@ -57,7 +57,7 @@
         <div class="bg-white p-6 rounded-2xl shadow">
             <h2 class="text-lg font-semibold text-gray-700 mb-4">Últimas Transações</h2>
             <ul class="space-y-3 text-sm">
-                {{-- @forelse($ultimasTransacoes as $transacao)
+                @forelse($ultimasTransacoes as $transacao)
                     <li class="flex justify-between">
                         <span>{{ $transacao->descricao }}</span>
                         <span class="{{ $transacao->tipo === 'entrada' ? 'text-green-600' : 'text-red-600' }}">
@@ -67,7 +67,7 @@
                     </li>
                 @empty
                     <li class="text-gray-500">Nenhuma transação encontrada</li>
-                @endforelse --}}
+                @endforelse
             </ul>
         </div>
     </div>
