@@ -6,21 +6,21 @@ use App\Models\Account;
 use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.banco')]
 class Translacao extends Component
 {
     public $transactions;
     public $accounts;
     public $categories;
-
-    // campos do form
     public $account_id;
     public $category_id;
-    public $type = 'entrada';
     public $description;
     public $amount;
     public $transaction_date;
+    public $type = 'entrada';
 
     protected $rules = [
         'account_id' => 'required|exists:accounts,id',
@@ -40,12 +40,12 @@ class Translacao extends Component
 
     public function loadTransactions()
     {
-        $this->transactions = Transaction::whereHas('account', function($q) {
+        $this->transactions = Transaction::whereHas('account', function ($q) {
             $q->where('user_id', Auth::id());
         })
-        ->with(['account', 'category'])
-        ->orderBy('transaction_date', 'desc')
-        ->get();
+            ->with(['account', 'category'])
+            ->orderBy('transaction_date', 'desc')
+            ->get();
     }
 
     public function save()

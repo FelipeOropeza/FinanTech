@@ -13,6 +13,7 @@ class Financeiro extends Component
     public $totalEntradas;
     public $totalSaidas;
     public $saldo;
+    public $ultimasTransacoes;
 
     public function mount()
     {
@@ -25,6 +26,10 @@ class Financeiro extends Component
         $this->totalSaidas = Transaction::whereHas('account', function ($q) use ($userId) {
             $q->where('user_id', $userId);
         })->where('type', 'saida')->sum('amount');
+
+        $this->ultimasTransacoes = Transaction::whereHas('account', function ($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })->latest()->take(5)->get();
 
         $this->saldo = $this->totalEntradas - $this->totalSaidas;
     }
