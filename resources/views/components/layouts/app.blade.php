@@ -13,7 +13,7 @@
 <body>
     <livewire:layouts.nav-bar />
     {{ $slot }}
-    <livewire:layouts.footer />
+    <x-partials.footer />
     @livewireScripts
 </body>
 
