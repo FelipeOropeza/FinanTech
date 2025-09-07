@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('components.layouts.banco')]
+#[Layout('components.layouts.app')]
 class Translacao extends Component
 {
     public $transactions;
