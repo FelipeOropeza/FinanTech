@@ -54,9 +54,10 @@
                 <button class="text-sm text-blue-600 hover:underline">🔄 Atualizar</button>
             </div>
             <div
-                class="h-64 flex items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 text-gray-400 border-2 border-dashed rounded-xl">
-                📊 O gráfico será exibido aqui
+                class="h-96 bg-gradient-to-r rounded-xl flex items-center justify-center">
+                <canvas id="graficoMensal" class="w-full h-full"></canvas>
             </div>
+
         </div>
 
         <!-- Últimas Transações -->
@@ -90,3 +91,53 @@
     </div>
 
 </div>
+@push('scripts')
+    <script>
+        document.addEventListener("livewire:navigated", () => {
+            const ctx = document.getElementById('graficoMensal').getContext("2d");
+
+            const labels = @json($labels);
+            const entradas = @json($entradas);
+            const saidas = @json($saidas);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Entradas',
+                            data: entradas,
+                            backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                            borderColor: 'rgb(34, 197, 94)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Saídas',
+                            data: saidas,
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            borderColor: 'rgb(239, 68, 68)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true, position: 'bottom' },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        x: { stacked: false },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => 'R$ ' + value.toLocaleString('pt-BR')
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+@endpush
