@@ -12,10 +12,15 @@
     @stack('scripts')
 </head>
 
-<body>
+<body class="min-h-screen flex flex-col bg-gray-50">
     <livewire:layouts.nav-bar />
-    {{ $slot }}
-    <x-partials.footer />
+
+    <main class="flex-1">
+        {{ $slot }}
+    </main>
+
+    <x-partials.footer class="mt-auto" />
+
     @livewireScripts
 </body>
 

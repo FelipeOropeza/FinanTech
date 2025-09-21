@@ -7,6 +7,7 @@ use App\Livewire\Home;
 use App\Livewire\Login;
 use App\Livewire\Financeiro;
 use App\Livewire\Translacao;
+use App\Livewire\Plano;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Home::class)->name('home');
@@ -16,3 +17,4 @@ Route::get('/financeiro', Financeiro::class)->name('financeiro');
 Route::get('/contas', Conta::class)->name('contas');
 Route::get('/categorias', Categoria::class)->name('categorias');
 Route::get('/transacoes', Translacao::class)->name('transacoes');
+Route::get('/planos', Plano::class)->name('planos');

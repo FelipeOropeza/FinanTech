@@ -36,6 +36,8 @@
             <div class="hidden md:flex items-center gap-6">
                 <a href="/" class="text-sm font-medium text-gray-700 hover:text-gray-900">Home</a>
                 @auth
+                    <a href="{{ route('planos') }}"
+                        class="text-sm font-medium text-gray-700 hover:text-gray-900">Planos</a>
                     <a href="{{ route('financeiro') }}"
                         class="text-sm font-medium text-gray-700 hover:text-gray-900">Financeiro</a>
                 @endauth
@@ -103,6 +105,8 @@
                 <a href="/"
                     class="block rounded-lg px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">Home</a>
                 @auth
+                    <a href="{{ route('planos') }}"
+                        class="block rounded-lg px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">Planos</a>
                     <a href="{{ route('financeiro') }}"
                         class="block rounded-lg px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">Financeiro</a>
                 @endauth
