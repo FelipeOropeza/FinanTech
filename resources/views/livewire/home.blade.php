@@ -46,21 +46,25 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div class="bg-white p-5 rounded-2xl shadow hover:shadow-md transition">
                         <p class="text-sm text-gray-500">Saldo geral</p>
-                        <p class="mt-2 text-2xl font-semibold text-gray-900">R$ 12.540,18</p>
+                        <p class="mt-2 text-2xl font-semibold text-gray-900">R$ {{ number_format($saldo, 2, ',', '.') }}</p>
                     </div>
                     <div class="bg-white p-5 rounded-2xl shadow hover:shadow-md transition">
                         <p class="text-sm text-gray-500">Receitas (mês)</p>
-                        <p class="mt-2 text-2xl font-semibold text-emerald-600">R$ 5.230,00</p>
+                        <p class="mt-2 text-2xl font-semibold text-emerald-600">R$
+                            {{ number_format($totalEntradasMes, 2, ',', '.') }}</p>
                     </div>
                     <div class="bg-white p-5 rounded-2xl shadow hover:shadow-md transition">
                         <p class="text-sm text-gray-500">Despesas (mês)</p>
-                        <p class="mt-2 text-2xl font-semibold text-rose-600">R$ 3.100,10</p>
+                        <p class="mt-2 text-2xl font-semibold text-rose-600">R$
+                            {{ number_format($totalSaidasMes, 2, ',', '.') }}</p>
                     </div>
                     <div class="bg-white p-5 rounded-2xl shadow hover:shadow-md transition">
                         <p class="text-sm text-gray-500">Economia</p>
-                        <p class="mt-2 text-2xl font-semibold text-indigo-700">R$ 2.129,90</p>
+                        <p class="mt-2 text-2xl font-semibold text-indigo-700">R$ {{ number_format($saldo, 2, ',', '.') }}
+                        </p>
                     </div>
                 </div>
+
             </div>
         </main>
     @endauth

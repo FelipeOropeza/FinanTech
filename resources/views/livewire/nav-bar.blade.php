@@ -7,6 +7,8 @@
         3 => ['label' => 'Gold', 'color' => 'text-yellow-400', 'bg' => 'bg-yellow-700', 'chip' => 'bg-yellow-100 text-yellow-800'],
     ];
     $plan = $planMeta[$userSubscription] ?? ['label' => 'Free', 'color' => 'text-white', 'bg' => 'bg-gray-800', 'chip' => 'bg-blue-100 text-blue-800'];
+
+    
 @endphp
 
 <header x-data="{ open: false, menu: false }"
