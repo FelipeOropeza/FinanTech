@@ -99,6 +99,7 @@
             const labels = @json($labels);
             const entradas = @json($entradas);
             const saidas = @json($saidas);
+            console.log(labels, entradas, saidas);
 
             new Chart(ctx, {
                 type: 'bar',

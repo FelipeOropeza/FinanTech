@@ -22,7 +22,6 @@ class Financeiro extends Component
     {
         $userId = Auth::id();
 
-        // Totais gerais
         $this->totalEntradas = Transaction::whereHas('account', fn($q) => $q->where('user_id', $userId))
             ->where('type', 'entrada')
             ->sum('amount');
@@ -34,32 +33,31 @@ class Financeiro extends Component
         $this->saldo = $this->totalEntradas - $this->totalSaidas;
 
         $this->ultimasTransacoes = Transaction::whereHas('account', fn($q) => $q->where('user_id', $userId))
-            ->latest()
+            ->latest('transaction_date')
             ->take(5)
             ->get();
 
-        // Criar range de meses (últimos 6 meses)
-        $periodo = collect();
-        for ($i = 5; $i >= 0; $i--) {
-            $periodo->push(now()->subMonths($i)->format('m/Y'));
-        }
-
-        // Buscar dados agrupados
-        $dados = Transaction::selectRaw("DATE_FORMAT(created_at, '%m/%Y') as mes, type, SUM(amount) as total")
+        $dados = Transaction::selectRaw("DATE_FORMAT(transaction_date, '%m/%Y') as mes, type, SUM(amount) as total")
             ->whereHas('account', fn($q) => $q->where('user_id', $userId))
-            ->whereBetween('created_at', [now()->subMonths(5)->startOfMonth(), now()->endOfMonth()])
             ->groupBy('mes', 'type')
-            ->orderByRaw("MIN(created_at)")
+            ->orderByRaw("MIN(transaction_date)")
             ->get()
             ->groupBy('mes');
 
-        // Preencher arrays
-        foreach ($periodo as $mes) {
+        $this->labels = [];
+        $this->entradas = [];
+        $this->saidas = [];
+
+        $mesesOrdenados = $dados->keys()->sortBy(fn($mes) => \Carbon\Carbon::createFromFormat('m/Y', $mes));
+
+        foreach ($mesesOrdenados as $mes) {
             $this->labels[] = $mes;
             $this->entradas[] = $dados->get($mes)?->where('type', 'entrada')->sum('total') ?? 0;
             $this->saidas[] = $dados->get($mes)?->where('type', 'saida')->sum('total') ?? 0;
         }
     }
+
+
 
     public function render()
     {
