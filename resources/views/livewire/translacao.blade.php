@@ -1,99 +1,118 @@
-<div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">💰 Transações</h1>
+<div class="max-w-7xl mx-auto p-6 space-y-8">
 
-    @if(session('success'))
-        <div class="bg-green-100 text-green-800 p-2 rounded mb-4">
+    <h1 class="text-2xl font-semibold text-gray-800">
+        Movimentações Financeiras
+    </h1>
+
+    @if (session('success'))
+        <div class="bg-emerald-100 text-emerald-800 px-4 py-3 rounded-md text-sm">
             {{ session('success') }}
         </div>
     @endif
 
-    <form wire:submit.prevent="save" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div>
-            <label class="block">Conta</label>
-            <select wire:model="account_id" class="w-full border rounded p-2">
+    {{-- FORM --}}
+    <form wire:submit.prevent="save" class="bg-white rounded-xl shadow-sm p-6 grid grid-cols-1 md:grid-cols-6 gap-4">
+
+        {{-- Banco --}}
+        <div class="md:col-span-2">
+            <label class="text-sm text-gray-600">Banco</label>
+            <select wire:model.live="account_id"
+                class="w-full border rounded-md px-3 py-2 text-sm focus:ring focus:ring-blue-200">
                 <option value="">Selecione</option>
-                @foreach($accounts as $acc)
+                @foreach ($accounts as $acc)
                     <option value="{{ $acc->id }}">{{ $acc->name }}</option>
                 @endforeach
             </select>
-            @error('account_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
-        <div>
-            <label class="block">Categoria</label>
-            <select wire:model="category_id" class="w-full border rounded p-2">
-                <option value="">Selecione</option>
-                @foreach($categories as $cat)
-                    <option value="{{ $cat->id }}">{{ $cat->name }} ({{ ucfirst($cat->type) }})</option>
+        {{-- Categoria --}}
+        <div class="md:col-span-2">
+            <label class="text-sm text-gray-600">Categoria</label>
+            <select wire:model.live="wallet_id" class="w-full border rounded-md px-3 py-2 text-sm disabled:bg-gray-100"
+                @disabled(!$account_id)>
+                <option value="">
+                    {{ $account_id ? 'Selecione um espaço' : 'Escolha um banco primeiro' }}
+                </option>
+
+                @foreach ($wallets as $w)
+                    <option value="{{ $w->id }}">
+                        {{ $w->name }}
+                    </option>
                 @endforeach
             </select>
-            @error('category_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+
         </div>
 
+        {{-- Tipo --}}
         <div>
-            <label class="block">Tipo</label>
-            <select wire:model="type" class="w-full border rounded p-2">
+            <label class="text-sm text-gray-600">Tipo</label>
+            <select wire:model="type" class="w-full border rounded-md px-3 py-2 text-sm">
                 <option value="entrada">Entrada</option>
                 <option value="saida">Saída</option>
             </select>
-            @error('type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
+        {{-- Valor --}}
         <div>
-            <label class="block">Descrição</label>
-            <input type="text" wire:model="description" class="w-full border rounded p-2">
-            @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            <label class="text-sm text-gray-600">Valor</label>
+            <input wire:model="amount" type="number" step="0.01" class="w-full border rounded-md px-3 py-2 text-sm">
         </div>
 
-        <div>
-            <label class="block">Valor</label>
-            <input type="number" step="0.01" wire:model="amount" class="w-full border rounded p-2">
-            @error('amount') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        {{-- Descrição --}}
+        <div class="md:col-span-4">
+            <label class="text-sm text-gray-600">Descrição</label>
+            <input wire:model="description" class="w-full border rounded-md px-3 py-2 text-sm">
         </div>
 
-        <div>
-            <label class="block">Data</label>
-            <input type="date" wire:model="transaction_date" class="w-full border rounded p-2">
-            @error('transaction_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        {{-- Data --}}
+        <div class="md:col-span-2">
+            <label class="text-sm text-gray-600">Data</label>
+            <input wire:model="transaction_date" type="date" class="w-full border rounded-md px-3 py-2 text-sm">
         </div>
 
-        <div class="col-span-2">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Salvar</button>
+        <div class="md:col-span-6 flex justify-end">
+            <button class="bg-blue-600 text-white px-6 py-2 rounded-md text-sm hover:bg-blue-700">
+                Salvar movimentação
+            </button>
         </div>
     </form>
 
-    <table class="w-full border-collapse border">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="border p-2">Data</th>
-                <th class="border p-2">Descrição</th>
-                <th class="border p-2">Conta</th>
-                <th class="border p-2">Categoria</th>
-                <th class="border p-2">Tipo</th>
-                <th class="border p-2">Valor</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($transactions as $t)
+    {{-- LISTA --}}
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">
+            Histórico
+        </h2>
+
+        <table class="w-full text-sm text-gray-700">
+            <thead class="border-b text-gray-500">
                 <tr>
-                    <td class="border p-2">{{ \Carbon\Carbon::parse($t->transaction_date)->format('d/m/Y') }}</td>
-                    <td class="border p-2">{{ $t->description }}</td>
-                    <td class="border p-2">{{ $t->account->name }}</td>
-                    <td class="border p-2">{{ $t->category->name }}</td>
-                    <td class="border p-2">
-                        @if($t->type === 'entrada')
-                            <span class="text-green-600 font-semibold">Entrada</span>
-                        @else
-                            <span class="text-red-600 font-semibold">Saída</span>
-                        @endif
-                    </td>
-                    <td class="border p-2">R$ {{ number_format($t->amount, 2, ',', '.') }}</td>
+                    <th class="py-2 text-left">Data</th>
+                    <th>Banco</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                    <th>Tipo</th>
+                    <th class="text-right">Valor</th>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="6" class="border p-2 text-center text-gray-500">Nenhuma transação registrada</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($transactions as $t)
+                    <tr class="border-b last:border-0">
+                        <td class="py-2">
+                            {{ \Carbon\Carbon::parse($t->transaction_date)->format('d/m/Y') }}
+                        </td>
+                        <td>{{ $t->wallet->account->name }}</td>
+                        <td>{{ $t->wallet->name }}</td>
+                        <td>{{ $t->description }}</td>
+                        <td class="{{ $t->type === 'entrada' ? 'text-emerald-600' : 'text-red-600' }}">
+                            {{ ucfirst($t->type) }}
+                        </td>
+                        <td class="text-right font-medium">
+                            R$ {{ number_format($t->amount, 2, ',', '.') }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
 </div>

@@ -1,9 +1,9 @@
 <div>
     <div
-        class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-indigo-50 to-blue-100 px-4">
+        class="flex flex-col justify-center items-center py-22">
         <div class="bg-white shadow-xl rounded-2xl px-8 pt-10 pb-8 w-full max-w-md border border-gray-100">
             <div class="mb-8 text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Bem-vindo de volta 👋</h2>
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Login</h2>
                 <p class="text-gray-600 text-sm">Acesse sua conta para continuar</p>
             </div>
             <form method="POST" wire:submit="login" class="space-y-6">

@@ -1,144 +1,165 @@
-<div class="p-6 min-h-screen space-y-8">
+<div class="p-6 min-h-screen space-y-10 bg-gray-50">
 
-    <!-- Título -->
+    {{-- Cabeçalho --}}
     <div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">💰 Financeiro</h1>
-        <p class="text-gray-600">Bem-vindo à sua área financeira.</p>
+        <h1 class="text-3xl font-semibold text-gray-900">Financeiro</h1>
+        <p class="text-sm text-gray-500 mt-1">
+            Visão geral das suas movimentações financeiras
+        </p>
     </div>
 
-    <!-- Ações -->
+    {{-- Ações --}}
     <div class="flex flex-wrap gap-3">
-        <a href="{{ route('contas') }}"
-            class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-            ➕ Nova Conta
+        <a href="{{ route('bancos') }}"
+            class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium
+                   bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 transition">
+            Minhas contas
         </a>
-        <a href="{{ route('categorias') }}"
-            class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-            🏷️ Nova Categoria
-        </a>
+
         <a href="{{ route('transacoes') }}"
-            class="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
-            📌 Novo Lançamento
+            class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium
+                   bg-indigo-600 text-white hover:bg-indigo-700 transition">
+            Novo lançamento
         </a>
     </div>
 
-    <!-- Resumo -->
+    {{-- Cards resumo --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition transform hover:-translate-y-1">
-            <h2 class="text-sm font-semibold text-gray-500">Entradas</h2>
-            <p class="text-2xl font-bold text-green-600 mt-2">
+        <div class="bg-white p-6 rounded-xl border border-gray-200">
+            <p class="text-sm text-gray-500">Entradas</p>
+            <p class="mt-2 text-2xl font-semibold text-gray-900">
                 R$ {{ number_format($totalEntradas, 2, ',', '.') }}
             </p>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition transform hover:-translate-y-1">
-            <h2 class="text-sm font-semibold text-gray-500">Saídas</h2>
-            <p class="text-2xl font-bold text-red-600 mt-2">
+
+        <div class="bg-white p-6 rounded-xl border border-gray-200">
+            <p class="text-sm text-gray-500">Saídas</p>
+            <p class="mt-2 text-2xl font-semibold text-gray-900">
                 R$ {{ number_format($totalSaidas, 2, ',', '.') }}
             </p>
         </div>
-        <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition transform hover:-translate-y-1">
-            <h2 class="text-sm font-semibold text-gray-500">Saldo</h2>
-            <p class="text-2xl font-bold {{ $saldo < 0 ? 'text-red-600' : 'text-blue-600' }} mt-2">
+
+        <div class="bg-white p-6 rounded-xl border border-gray-200">
+            <p class="text-sm text-gray-500">Saldo atual</p>
+            <p
+                class="mt-2 text-2xl font-semibold {{ $saldo < 0 ? 'text-red-600' : 'text-emerald-600' }}">
                 R$ {{ number_format($saldo, 2, ',', '.') }}
             </p>
         </div>
     </div>
 
-    <!-- Conteúdo -->
+    {{-- Conteúdo principal --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        <!-- Gráfico -->
-        <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold text-gray-700">Movimentação Mensal</h2>
-                <button class="text-sm text-blue-600 hover:underline">🔄 Atualizar</button>
-            </div>
-            <div
-                class="h-96 bg-gradient-to-r rounded-xl flex items-center justify-center">
-                <canvas id="graficoMensal" class="w-full h-full"></canvas>
+        {{-- Gráfico --}}
+        <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-base font-medium text-gray-800">
+                    Movimentação mensal
+                </h2>
+                <button class="text-sm text-gray-500 hover:text-gray-700">
+                    Atualizar
+                </button>
             </div>
 
+            <div class="h-96">
+                <canvas id="graficoMensal"></canvas>
+            </div>
         </div>
 
-        <!-- Últimas Transações -->
-        <div class="bg-white p-6 rounded-2xl shadow">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold text-gray-700">Últimas Transações</h2>
-                <a href="{{ route('transacoes') }}" class="text-sm text-blue-600 hover:underline">Ver todas</a>
+        {{-- Últimas transações --}}
+        <div class="bg-white p-6 rounded-xl border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-base font-medium text-gray-800">
+                    Últimas transações
+                </h2>
+                <a href="{{ route('transacoes') }}"
+                    class="text-sm text-indigo-600 hover:text-indigo-700">
+                    Ver todas
+                </a>
             </div>
-            <ul class="space-y-3 text-sm">
+
+            <ul class="space-y-4 text-sm">
                 @forelse($ultimasTransacoes as $transacao)
-                    <li class="flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">
-                                {{ $transacao->type === 'entrada' ? '💰' : '💸' }}
-                            </span>
-                            <span>{{ $transacao->description }}</span>
-                            <span class="text-gray-400 text-xs">({{ $transacao->created_at->format('d/m') }})</span>
+                    <li class="flex justify-between items-start">
+                        <div>
+                            <p class="font-medium text-gray-800">
+                                {{ $transacao->description }}
+                            </p>
+                            <p class="text-xs text-gray-400">
+                                {{ $transacao->created_at->format('d/m/Y') }}
+                            </p>
                         </div>
+
                         <span
-                            class="{{ $transacao->type === 'entrada' ? 'text-green-600' : 'text-red-600' }} font-semibold">
+                            class="font-medium {{ $transacao->type === 'entrada' ? 'text-emerald-600' : 'text-red-600' }}">
                             {{ $transacao->type === 'entrada' ? '+' : '-' }}
                             R$ {{ number_format($transacao->amount, 2, ',', '.') }}
                         </span>
                     </li>
                 @empty
-                    <li class="text-gray-500">Nenhuma transação encontrada</li>
+                    <li class="text-sm text-gray-500">
+                        Nenhuma transação registrada
+                    </li>
                 @endforelse
             </ul>
         </div>
 
     </div>
-
 </div>
+
 @push('scripts')
-    <script>
-        document.addEventListener("livewire:navigated", () => {
-            const ctx = document.getElementById('graficoMensal').getContext("2d");
+<script>
+    document.addEventListener("livewire:navigated", () => {
+        const canvas = document.getElementById('graficoMensal');
+        if (!canvas) return;
 
-            const labels = @json($labels);
-            const entradas = @json($entradas);
-            const saidas = @json($saidas);
-            console.log(labels, entradas, saidas);
+        const ctx = canvas.getContext("2d");
 
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Entradas',
-                            data: entradas,
-                            backgroundColor: 'rgba(34, 197, 94, 0.7)',
-                            borderColor: 'rgb(34, 197, 94)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: 'Saídas',
-                            data: saidas,
-                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
-                            borderColor: 'rgb(239, 68, 68)',
-                            borderWidth: 1
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: true, position: 'bottom' },
-                        tooltip: { mode: 'index', intersect: false }
+        const labels = @json($labels);
+        const entradas = @json($entradas);
+        const saidas = @json($saidas);
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: 'Entradas',
+                        data: entradas,
+                        backgroundColor: 'rgba(16, 185, 129, 0.6)',
+                        borderRadius: 6
                     },
-                    scales: {
-                        x: { stacked: false },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: value => 'R$ ' + value.toLocaleString('pt-BR')
-                            }
+                    {
+                        label: 'Saídas',
+                        data: saidas,
+                        backgroundColor: 'rgba(239, 68, 68, 0.6)',
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 12 }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: value =>
+                                'R$ ' + value.toLocaleString('pt-BR')
                         }
                     }
                 }
-            });
+            }
         });
-    </script>
+    });
+</script>
 @endpush

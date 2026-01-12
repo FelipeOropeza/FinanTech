@@ -21,23 +21,27 @@ class Home extends Component
     {
         $user = Auth::user();
 
-        if ($user) {
-            $userId = $user->id;
-            $inicioMes = Carbon::now()->startOfMonth();
-            $fimMes = Carbon::now()->endOfMonth();
-
-            $this->totalEntradasMes = Transaction::whereHas('account', fn($q) => $q->where('user_id', $userId))
-                ->where('type', 'entrada')
-                ->whereBetween('transaction_date', [$inicioMes, $fimMes])
-                ->sum('amount');
-
-            $this->totalSaidasMes = Transaction::whereHas('account', fn($q) => $q->where('user_id', $userId))
-                ->where('type', 'saida')
-                ->whereBetween('transaction_date', [$inicioMes, $fimMes])
-                ->sum('amount');
-
-            $this->saldo = $this->totalEntradasMes - $this->totalSaidasMes;
+        if (! $user) {
+            return;
         }
+
+        $inicioMes = Carbon::now()->startOfMonth();
+        $fimMes = Carbon::now()->endOfMonth();
+
+        $baseQuery = Transaction::whereHas(
+            'wallet.account',
+            fn ($q) => $q->where('user_id', $user->id)
+        )->whereBetween('transaction_date', [$inicioMes, $fimMes]);
+
+        $this->totalEntradasMes = (clone $baseQuery)
+            ->where('type', 'entrada')
+            ->sum('amount');
+
+        $this->totalSaidasMes = (clone $baseQuery)
+            ->where('type', 'saida')
+            ->sum('amount');
+
+        $this->saldo = $this->totalEntradasMes - $this->totalSaidasMes;
     }
 
     public function render()

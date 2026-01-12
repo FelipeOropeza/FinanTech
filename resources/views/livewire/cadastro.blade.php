@@ -1,9 +1,9 @@
 <div>
     <div
-        class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-green-50 to-emerald-100 px-4">
+        class="min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center bg-gradient-to-br">
         <div class="bg-white shadow-xl rounded-2xl px-8 pt-10 pb-8 w-full max-w-md border border-gray-100">
             <div class="mb-8 text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Crie sua conta 🚀</h2>
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Crie sua conta</h2>
                 <p class="text-gray-600 text-sm">Cadastre-se para começar a usar o FinanTech</p>
             </div>
 
