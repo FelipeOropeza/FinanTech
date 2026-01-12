@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
 class Transaction extends Model
 {
-    protected $fillable = ['account_id', 'category_id', 'type', 'description', 'amount', 'transaction_date'];
+    protected $fillable = [
+        'wallet_id',
+        'type',
+        'description',
+        'amount',
+        'transaction_date',
+    ];
 
-    public function account(): BelongsTo
+    public function wallet(): BelongsTo
     {
-        return $this->belongsTo(Account::class);
-    }
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Wallet::class);
     }
 }
